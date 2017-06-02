@@ -1,19 +1,15 @@
-import React, { Component }             from 'react';
-import { createStore, applyMiddleware } from 'redux';
-import { Provider }                     from 'react-redux';
-import reducers from './reducers';
-
-import thunk from 'redux-thunk';
+import React, { Component } from 'react';
+import { Provider }         from 'react-redux';
 
 import App from './containers/app';
 
-const store = {};
+import configureStore from './store';
+import { loadUserData } from './actions/userActions';
+
+const store = configureStore();
+store.dispatch(loadUserData());
 
 export default class Root extends Component {
-  static navigationOptions = {
-    title: 'Welcome',
-  };
-
   render () {
     return (
       <Provider store={store}>
