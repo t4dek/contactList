@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Provider }         from 'react-redux';
-
-import App from './containers/app';
+import { AppNavigator }     from './navigators';
 
 import configureStore from './store';
 import { loadUserData } from './actions/userActions';
@@ -13,7 +12,7 @@ export default class Root extends Component {
   render () {
     return (
       <Provider store={store}>
-        <App />
+        <AppNavigator />
       </Provider>
     );
   }

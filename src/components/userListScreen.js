@@ -5,10 +5,12 @@ import {
   View,
   ListView,
   StyleSheet,
-  TouchableHighligh
+  StatusBar,
+  TouchableHighlight
 }                           from 'react-native';
 
 import Header from './header';
+import ProfileRow from './profileRow';
 
 const propTypes = {
   users: PropTypes.object.isRequired
@@ -35,29 +37,25 @@ class UserListScreen extends Component {
     }
   }
 
-  headerComp(props){
-    console.log(props);
-    return <Header />
-  }
-
-  static navigationOptions = {
-    title: 'Contacts'
-  }
-
   renderRow(rowData){
+    const { navigate } = this.props.navigation;
     return (
-      <Text>
-        { rowData.fullName }
-      </Text>
+      <ProfileRow
+        user={ rowData }
+        onPress={ () => navigate('Profile') }
+      />
     )
   }
 
   render(){
     return (
       <View>
+        <StatusBar
+          barStyle='light-content'
+        />
         <ListView
           dataSource={ this.state.users }
-          renderRow={ this.renderRow }
+          renderRow={ this.renderRow.bind(this) }
         />
       </View>
     )
@@ -66,7 +64,6 @@ class UserListScreen extends Component {
 }
 
 function mapStateToProps(state, nav){
-  console.log(nav);
   const { users } = state;
 
   return { users };
