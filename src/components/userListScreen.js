@@ -9,8 +9,10 @@ import {
   TouchableHighlight
 }                           from 'react-native';
 
-import Header from './header';
+import { ds }     from '../utils';
+import Header     from './header';
 import ProfileRow from './profileRow';
+import Separator  from './separator';
 
 const propTypes = {
   users: PropTypes.object.isRequired
@@ -20,9 +22,6 @@ class UserListScreen extends Component {
   constructor(props) {
     super(props);
 
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
-
     this.state = {
       users: ds.cloneWithRows(props.users)
     }
@@ -30,7 +29,6 @@ class UserListScreen extends Component {
 
   componentWillReceiveProps(nextProps) {
     if(nextProps.users) {
-      const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
       this.setState({
         users: ds.cloneWithRows(nextProps.users)
       })
@@ -38,18 +36,21 @@ class UserListScreen extends Component {
   }
 
   renderRow(rowData){
-    const { navigate } = this.props.navigation;
+    const { navigate, state } = this.props.navigation;
     return (
-      <ProfileRow
-        user={ rowData }
-        onPress={ () => navigate('Profile') }
-      />
+      <View>
+        <ProfileRow
+          user={ rowData }
+          onPress={ () => navigate('Profile', { user: rowData }) }
+        />
+        <Separator />
+      </View>
     )
   }
 
   render(){
     return (
-      <View>
+      <View style={ { backgroundColor: 'snow' } }>
         <StatusBar
           barStyle='light-content'
         />

@@ -9,14 +9,10 @@ export const AppNavigator = StackNavigator({
   Users: {
     screen: UserListScreen,
     navigationOptions: {
-      header: <Header />,
-      title: 'Contacts'
+      header: <Header />
     },
   },
   Profile: {
-    screen: Profile,
-    navigationOptions: {
-      title: 'Profile'
-    }
+    screen: Profile
   }
 });

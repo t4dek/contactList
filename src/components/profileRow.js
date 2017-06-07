@@ -26,10 +26,10 @@ class ProfileRow extends Component {
               source={ { uri: avatar } }
             />
             <View style={ styles.row }>
-              <Text>
+              <Text style={ styles.name }>
                 { fullName }
               </Text>
-              <Text>
+              <Text style={ styles.posititon }>
                 { jobTitle }
               </Text>
             </View>
@@ -43,8 +43,9 @@ class ProfileRow extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
     flexDirection: 'row',
+    alignContent: 'flex-start',
     alignItems: 'center',
     height: 60,
     backgroundColor: 'snow'
@@ -52,13 +53,18 @@ const styles = StyleSheet.create({
   image: {
     height: 35,
     width: 35,
-    borderRadius: 34,
-    flexBasis: '15%',
-    marginLeft: 15
+    borderRadius: 18,
+    marginLeft: 10
   },
   row: {
-    flexBasis: '80%',
-    alignItems: 'center'
+    marginLeft: 10
+  },
+  name: {
+    fontWeight: 'bold'
+  },
+  posititon: {
+    fontSize: 11,
+    fontWeight: '400'
   }
 });
 

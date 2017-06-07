@@ -20,13 +20,15 @@ export default class Header extends Component {
     return (
       <View style={ styles.container }>
         <Image
-          style={ styles.image }
-          source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}
+          style={ [ styles.image, styles.content ] }
+          source={{uri: 'https://openclipart.org/image/2400px/svg_to_png/215819/Linux-Avatar.png'}}
         />
-        <TextInput
-          style={ styles.searchInput }
-          placeholder='Type user name to search'
-        />
+        <View>
+          <TextInput
+            style={ [ styles.searchInput, styles.content ] }
+            placeholder='Search contact'
+          />
+        </View>
       </View>
     )
   }
@@ -36,25 +38,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-around',
-    alignContent: 'center',
+    alignItems: 'flex-end',
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    maxHeight: 80,
+    maxHeight: 64,
     backgroundColor: 'royalblue'
   },
   searchInput: {
-    textAlign: 'center',
-    alignSelf: 'center',
-    flexBasis: '80%',
-    height: 35,
+    width: 240,
+    height: 28,
     backgroundColor: 'snow',
-    borderRadius: 5
+    borderRadius: 5,
+    fontSize: 14,
+    paddingLeft: 10
+  },
+  content: {
+    marginBottom: 8
   },
   image: {
-    alignSelf: 'center',
-    flexBasis: '10%',
-    width: 35,
-    height: 35,
-    borderRadius: 18
+    width: 28,
+    height: 28,
+    borderRadius: 15
   }
 });
