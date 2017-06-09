@@ -88,7 +88,7 @@ class ProfileScreen extends Component {
             </Text>
             <Text
               style={ styles.info }
-              onLongPress={(s) => console.log('Long press', this)}
+              selectable
             >
               { obj[key] }
             </Text>
