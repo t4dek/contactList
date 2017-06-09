@@ -7,35 +7,89 @@ import {
   Image,
   StyleSheet,
   ListView,
+  Linking,
   TouchableHighlight
 }                                      from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import { ds }        from '../utils';
 import ProfileHeader from './profileHeader';
 import Separator  from './separator';
 
-const propTypes = {
-  user: PropTypes.object.isRequired
-}
-
 class ProfileScreen extends Component {
+  openLink(type){
+    console.log(type);
+    const { user } = this.props.navigation.state.params;
+    let url;
+
+    switch(type){
+      case 'ios-text':
+        url = `sms:${ user.cellphone }`
+        break
+      case 'ios-call':
+        url = `skype:${ user.cellphone }`
+        break
+      case 'ios-mail':
+        url = `mailto:${ user.elekseMail }`
+        break
+    }
+
+    return Linking.canOpenURL(url).then(supported => {
+      if(!supported) {
+        console.log('Can\'t handle url: ' + url);
+      } else {
+        Linking.openURL(url)
+        .catch(err => {
+          console.warn('openURL error', err)
+        });
+      }
+    }).catch(err => console.warn('An unexpected error happened', err));
+  }
+
+  renderIcons(){
+    const icons = ['ios-text', 'ios-call', 'ios-mail'];
+
+    return icons.map(iconName => {
+      return (
+        <View
+          style={ styles.test }
+          key={ iconName }
+        >
+          <TouchableHighlight
+            onPress={ this.openLink.bind(this, iconName) }
+          >
+            <Icon
+              name={ iconName }
+              size={ 24 }
+              style={ styles.icon }
+              color='white'
+              backgroundColor='royalblue'
+            />
+          </TouchableHighlight>
+        </View>
+      );
+    });
+  }
   renderDetails(obj){
     let items = [];
     const labelMapper = {
-      room:         'room',
-      elekseMail:   'email',
-      cellphone:    'mobile',
-      skype:        'skype',
-      carModelName: 'car'
+      room:         'ROOM',
+      elekseMail:   'EMAIL',
+      cellphone:    'MOBILE',
+      skype:        'SKYPE',
+      carModelName: 'CAR'
     };
     for(let key in obj){
       if(obj.hasOwnProperty(key)){
         items.push(
-          (<View>
+          (<View key={ key }>
             <Text style={ styles.label }>
               { labelMapper[key] }
             </Text>
-            <Text style={ styles.info }>
+            <Text
+              style={ styles.info }
+              onLongPress={(s) => console.log('Long press', this)}
+            >
               { obj[key] }
             </Text>
             <Separator />
@@ -43,7 +97,6 @@ class ProfileScreen extends Component {
         )
       }
     }
-    console.log(items);
     return items;
   }
 
@@ -61,7 +114,7 @@ class ProfileScreen extends Component {
         <StatusBar
           barStyle='dark-content'
         />
-        <View style={ styles.profileContainer}>
+        <View style={ styles.profileContainer }>
           <View style={ styles.profile }>
             <Image
               style={ styles.image }
@@ -77,9 +130,7 @@ class ProfileScreen extends Component {
             </View>
           </View>
           <View style={ styles.actions }>
-            <Text>
-              Here will be action buttons
-            </Text>
+            { this.renderIcons() }
           </View>
         </View>
         <View style={ styles.infoContainer }>
@@ -98,7 +149,7 @@ const styles = StyleSheet.create({
   },
   profileContainer: {
     flex: 1,
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
     flexBasis: '40%',
     backgroundColor: '#EDECF0'
@@ -111,9 +162,16 @@ const styles = StyleSheet.create({
   profile: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    flexBasis: '70%'
   },
   actions: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignSelf: 'stretch',
+    flexBasis: '30%',
+    paddingTop: 5
   },
   infoContainer: {
     flex: 1,
@@ -121,11 +179,15 @@ const styles = StyleSheet.create({
     flexBasis: '60%'
   },
   label: {
-    fontWeight: 'bold',
-    paddingLeft: 15
+    paddingLeft: 15,
+    fontSize: 10,
+    marginBottom: 5,
+    fontWeight: '100'
   },
   info: {
-    paddingLeft: 15
+    fontSize: 15,
+    paddingLeft: 15,
+    fontWeight: '400'
   },
   userInfo: {
     alignItems: 'center'
@@ -137,9 +199,23 @@ const styles = StyleSheet.create({
   position: {
     fontWeight: '400',
     fontSize: 12
+  },
+  icon: {
+    backgroundColor: 'royalblue',
+    textAlign: 'center',
+    width: 30
+  },
+  test: {
+    flex: 1,
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'royalblue',
+    height: 40,
+    width: 40,
+    maxWidth: 40,
+    borderRadius: 20
   }
 });
-
-ProfileScreen.propTypes = propTypes;
 
 export default ProfileScreen;
